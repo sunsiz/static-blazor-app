@@ -62,3 +62,8 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+a{ text-decoration: none;}
+.arabic {
+    font-family: 'Arabic Typesetting', Latif, 'Traditional Arabic','Droid Naskh', 'Calibri', Arial;
+    direction: rtl;
+}

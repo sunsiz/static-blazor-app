@@ -1,0 +1,101 @@
+﻿@page "/AyaList"
+@using BlazorApp.Shared
+@using System.Net
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime 
+
+<div class="text-center vstack shadow-lg bg-warning bg-gradient rounded-3">
+    <h3 class="pt-3 pb-0 text-success">@SuraId. @SuraName</h3>
+    <span class="text-center arabic mx-auto fs-3 pb-2 pt-0">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
+</div>
+@foreach (Aya aya in ayaList)
+{
+    <div class="row my-3" id="@aya.AyaId">
+        <div class="col">
+            <div class="card bg-light bg-gradient">
+                <div class="card-body">
+                    <div class="vstack">
+                        <h5 class="card-title bg-primary bg-gradient hstack rounded-3 gap-3 text-white">
+                            <span class="bg-danger bg-gradient border-3 rounded-2 shadow-lg me-auto p-2 ms-1">@aya.AyaId</span>
+                            @* <span class="oi oi-share ms-auto" title="Share" aria-hidden="true" @onclick="()=>ShareAya(aya)"></span>
+                            <span class='oi oi-heart @(aya.IsFavorite?"text-warning":"text-white")' title="Favorite" aria-hidden="true" @onclick="()=>Favorite(aya)"></span> *@
+                            @* <span class='oi oi-bookmark me-3 @(IsBookmark(aya)?"text-warning":"text-white")' title="Bookmark" aria-hidden="true" @onclick="()=>Bookmark(aya)"></span> *@
+                        </h5>
+                        <p class="arabic mb-0 me-2" style=@arabicStyle>@aya.Arabic</p>
+                        <p class="my-2" style=@textStyle>@aya.Text</p>
+                        @if (aya.Comment != null)
+                        {
+                            <hr />
+                            <p style=@commentStyle>
+                                @((MarkupString)aya.Comment)
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public int SuraId { get; set; }
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string SuraName { get; set; }
+    private Aya[] ayaList = new Aya[] { };
+    private string arabicStyle
+    {
+        get
+        {
+            var result = JSRuntime.InvokeAsync<int>("localStorage.getItem", "ArabicFontSize").ConfigureAwait(false);
+            // if (result == 0) result = 16;
+            return "font-size:" + result + "px";
+        }
+    }
+
+    private string textStyle
+    {
+        get
+        {
+            var result = JSRuntime.InvokeAsync<int>("localStorage.getItem", "TranslateFontSize");
+            // result = result == 0 ? 14 : result;
+            return "font-size:" + result + "px";
+        }
+    }
+
+    private string commentStyle
+    {
+        get
+        {
+            var result = JSRuntime.InvokeAsync<int>("localStorage.getItem", "CommentFontSize");
+            // if (result == 0) result = 12;
+            return "font-size:" + result + "px";
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            ayaList = await Http.GetFromJsonAsync<Aya[]>("/api/Aya/"+SuraId) ?? new Aya[] { };
+            Console.WriteLine("Aya list is " + ayaList);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+    }
+
+    private bool IsBookmark(Aya aya)
+    {
+        var bookmark = JSRuntime.InvokeAsync<string>("localStorage.getItem", "bookmark").Result;
+        return bookmark == aya.SuraId + ":" + aya.AyaId;
+    }
+
+    private void Bookmark(Aya aya)
+    {
+        JSRuntime.InvokeVoidAsync("localStorage.setItem", "bookmark", aya.SuraId + ":" + aya.AyaId);
+    }
+
+}

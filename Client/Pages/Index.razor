@@ -2,23 +2,6 @@
 @using BlazorApp.Shared
 @inject HttpClient Http
 
-<PageTitle>Index</PageTitle>
-@code {
-    private Sura[] SuraList = new Sura[] { };
-
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            SuraList = await Http.GetFromJsonAsync<Sura[]>("/api/Sura") ?? new Sura[] { };
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-        }
-    }
-}
-
 <div class="text-white mb-3"><h3 class="px-5 py-3 shadow-lg w-100 bg-info bg-gradient rounded-3">Suras</h3></div>
 
 @foreach (Sura sura in SuraList)
@@ -44,4 +27,22 @@
         </div>
     </div>
 }
+@* <button class="btn btn-primary" @onclick="() => RefreshContent()">Refresh</button> *@
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+@code {
+    private Sura[] SuraList = new Sura[] { };
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            SuraList = await Http.GetFromJsonAsync<Sura[]>("/api/Sura") ?? new Sura[] { };
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+    }
+
+}

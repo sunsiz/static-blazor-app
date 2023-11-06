@@ -16,12 +16,12 @@ namespace BlazorApp.Shared
         private readonly ILogger _logger;
         private readonly string _dbPath;
         SQLiteConnection conn;
-        public DBContext(ILoggerFactory loggerFactory, string dbPath)
+        public DBContext(ILoggerFactory loggerFactory)
         {
-            _dbPath = dbPath;
+            _dbPath = "quran.db";;
             _logger = loggerFactory.CreateLogger<DBContext>();
         }
-        private async Task InitializeAsync()
+        private void InitializeAsync()
         {
             // Don't Create database if it exists
             if (conn != null)
@@ -40,11 +40,15 @@ namespace BlazorApp.Shared
                         Trace = true
                     };
                     Debug.WriteLine("The database path: " + conn.DatabasePath);
-                    Debug.WriteLine("The table counts before: " + conn.TableMappings.Count());
-                    conn.CreateTable<Sura>();
-                    conn.CreateTable<Aya>();
-                    Debug.WriteLine("The table counts after: " + conn.TableMappings.Count());
-                    Debug.WriteLine(conn.DatabasePath);
+                    var count = conn.TableMappings.Count();
+                    if (count == 0)
+                    {
+                        Debug.WriteLine("The table counts before: " + count);
+                        conn.CreateTable<Sura>();
+                        conn.CreateTable<Aya>();
+                        Debug.WriteLine("The table counts after: " + conn.TableMappings.Count());
+                        Debug.WriteLine(conn.DatabasePath);
+                    }
                     //conn.Backup(conn.DatabasePath);
                 }
             }
@@ -54,10 +58,15 @@ namespace BlazorApp.Shared
             }
         }
 
-        public async Task<List<Sura>> GetSurasAsync()
+        public List<Sura> GetSuras()
         {
-            await InitializeAsync();
+            InitializeAsync();
             return conn.Table<Sura>().ToList();
+        }
+        public IEnumerable<Aya> GetAyaList(int suraId)
+        {
+            InitializeAsync();
+            return conn.Table<Aya>().Where(a => a.SuraId == suraId).ToList();
         }
     }
 }
