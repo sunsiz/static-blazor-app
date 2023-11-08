@@ -39,7 +39,7 @@ namespace BlazorApp.Shared
                         Tracer = new Action<string>(q => Debug.WriteLine(q)),
                         Trace = true
                     };
-                    Debug.WriteLine("The database path: " + conn.DatabasePath);
+                    Console.WriteLine("The database path: " + conn.DatabasePath);
                     var count = conn.TableMappings.Count();
                     if (count == 0)
                     {

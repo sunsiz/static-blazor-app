@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using BlazorApp.Shared;
@@ -18,17 +19,17 @@ namespace ApiIsolated
         private const string DevEnvironment = "Development";
         public static void Main()
         {
-            bool isDevEnv = System.Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == DevEnvironment
-                ? true
-                : false;
+            var env = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT");
+            bool isDevEnv = env == DevEnvironment ? true : false;
+            Console.WriteLine("The environment is " + env);
             if (!isDevEnv && !File.Exists(AzureDbPath)) CopyDb();
             var host = new HostBuilder()
                 .ConfigureFunctionsWorkerDefaults()
                 .ConfigureServices(s=>
                 {
-                    s.AddPooledDbContextFactory<DBContext>((s, o) => o
-                        .UseSqlite($"datasource={(isDevEnv ? DbPath : AzureDbPath)};")
-                        .UseLoggerFactory(s.GetRequiredService<ILoggerFactory>()));
+                    s.AddPooledDbContextFactory<DBContext>((p, o) => o
+                        .UseSqlite($"data source={(isDevEnv ? DbPath : AzureDbPath)};")
+                        .UseLoggerFactory(p.GetRequiredService<ILoggerFactory>()));
                 })
                 .Build();
 
