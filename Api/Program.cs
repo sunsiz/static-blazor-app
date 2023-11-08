@@ -15,12 +15,11 @@ namespace ApiIsolated
     {
         //Copied from https://www.youtube.com/watch?v=xSAyEDFLFTw
         public const string DbPath = "quran.db";
-        public const string AzureDbPath = "d:/home/quran.db";
-        public const string DevEnvironment = "Development";
+        public const string AzureDbPath = "d:\\home\\quran.db";
         public static void Main()
         {
             var env = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT");
-            bool isDevEnv = env == DevEnvironment ? true : false;
+            bool isDevEnv = env == "Development" ? true : false;
             Console.WriteLine("The environment is " + env);
             if (!isDevEnv && !File.Exists(AzureDbPath)) CopyDb();
             var host = new HostBuilder()
@@ -28,7 +27,7 @@ namespace ApiIsolated
                 .ConfigureServices(s=>
                 {
                     s.AddPooledDbContextFactory<DBContext>((p, o) => o
-                        .UseSqlite($"data source={(isDevEnv ? DbPath : AzureDbPath)};")
+                        .UseSqlite($"data source={( AzureDbPath)};")
                         .UseLoggerFactory(p.GetRequiredService<ILoggerFactory>()));
                 })
                 .Build();
