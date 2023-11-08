@@ -2,31 +2,33 @@
 @using BlazorApp.Shared
 @inject HttpClient Http
 
-<div class="text-white mb-3"><h3 class="px-5 py-3 shadow-lg w-100 bg-info bg-gradient rounded-3">Suras</h3></div>
+<div class="text-white mb-3"><h1 class="px-5 py-4 w-100 text-info bg-gradient rounded-3 text-center arabic">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h1></div>
 
-@foreach (Sura sura in SuraList)
-{
-    <div class="row my-2">
-        <div class="col">
-            <div class="card bg-success bg-gradient">
-                <div class="card-body py-1">
-                    <a href="AyaList?SuraId=@sura.Id&SuraName=@sura.Name" class="stretched-link text-white">
-                        <div class="hstack">
-                            <div class="vstack">
-                                <h5 class="card-title mb-0">@sura.Id. @sura.Name</h5>
-                                @{
-                                    var revealed = sura.RevealedIn ? "Makka" : "Madina";
-                                }
-                                <p class="card-text"><span class="my-0">@sura.Meaning</span> - @revealed (@sura.AyaCount)</p>
-                            </div>
-                            <h2 class="arabic">@sura.ArabicName</h2>
+<div class="surah-layout">
+    @foreach (Sura sura in SuraList)
+    {
+        <div class="card shadow-sm align-items-center d-grid">
+            <a href="AyaList?SuraId=@sura.Id&SuraName=@sura.Name" class="text-decoration-none text-body align-content-center">
+                <div class="row-container text-center">
+                    <div class="row-left">
+                        <div class="surah-number"><span>@($"{sura.Id}")</span></div>
+                        <div class="surah-name-container">
+                            <div class="translated-surah-name">@($"{sura.Name}")</div>
+                            @{
+                                var revealed = sura.RevealedIn ? "Makka" : "Madina";
+                            }
+                            <span class="text-muted">@sura.Meaning <br/><span class="small">@revealed</span></span>
                         </div>
-                    </a>
+                    </div>
+                    <div class="row-right">
+                        <h5 class="arabic">@sura.ArabicName</h5>
+                        <div class="aya-count text-muted small"><span>@($"({sura.AyaCount})")</span></div>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
-    </div>
-}
+    }
+</div>
 @* <button class="btn btn-primary" @onclick="() => RefreshContent()">Refresh</button> *@
 <SurveyPrompt Title="How is Blazor working for you?" />
 

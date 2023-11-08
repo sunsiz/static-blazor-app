@@ -64,6 +64,142 @@ a, .btn-link {
     }
 a{ text-decoration: none;}
 .arabic {
-    font-family: 'Arabic Typesetting', Latif, 'Traditional Arabic','Droid Naskh', 'Calibri', Arial;
+    font-family: 'Feyzul Furkan', 'Arabic Typesetting', Latif, 'Traditional Arabic','Droid Naskh', 'Calibri', Arial;
     direction: rtl;
+    /*line-height: 60px;*/
+    width: 100%;
+    /*margin: 4px 0;*/
+}
+.header-gradient {
+    -webkit-text-fill-color: transparent;
+    background: linear-gradient(128.87deg,#512bd4 14.05%,#d600aa 89.3%);
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+.surah-layout {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+@media only screen and (max-width: 767.98px) {
+    .surah-layout {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 0.8125rem;
+        gap: 0.8125rem;
+    }
+}
+@media only screen and (min-width: 768px) {
+    .surah-layout {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 0.8125rem;
+        gap: 0.8125rem;
+    }
+}
+@media only screen and (min-width: 992px) {
+    .surah-layout {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 0.8125rem;
+        gap: 0.8125rem;
+    }
+}
+@media only screen and (min-width: 1200px) {
+    .surah-layout {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 0.8125rem;
+        gap: 0.8125rem;
+    }
+}
+@media only screen and (min-width: 1400px) {
+    .surah-layout {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-gap: 0.8125rem;
+        gap: 0.8125rem;
+    }
+}
+.row-container:hover .surah-number {
+    background-color: #2ca4ab;
+    color: #fff;
+}
+
+.row-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*border: 1px solid #ebeef0;*/
+    -webkit-padding-before: 1rem;
+    padding-block-start: 1rem;
+    -webkit-padding-after: 1rem;
+    padding-block-end: 1rem;
+    -webkit-padding-start: 1.1875rem;
+    padding-inline-start: 1.1875rem;
+    -webkit-padding-end: 1.1875rem;
+    padding-inline-end: 1.1875rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.card:hover {
+    border: 1px solid #2ca4ab;
+    background-color: #f8f9fa;
+}
+
+.row-left, .row-right {
+    display: flex;
+    align-items: center;
+}
+
+.row-right {
+    flex-direction: column;
+}
+.surah-number {
+    background-color: #f4f5f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(2.5*1rem);
+    height: calc(2.5*1rem);
+    border-radius: 0.25rem;
+    transform: rotate(45deg);
+    -webkit-margin-end: 1.1875rem;
+    margin-inline-end: 1.1875rem;
+}
+.row-container:hover .surah-number {
+    background-color: #2ca4ab;
+    color: #fff;
+}
+.surah-number > span {
+    transform: rotate(-45deg);
+    font-weight: 700;
+}
+.surah-name-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.translated-surah-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #666;
+}
+
+.row-container:hover .aya-count, .row-container:hover .translated-surah-name {
+    color: #2ca4ab;
+}
+.translated-surah-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #666;
+}
+
+.row-container:hover .aya-count, .row-container:hover .translated-surah-name {
+    color: #2ca4ab;
+}
+.card:hover {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+    /*box-shadow: 0 2px 3px 0 #e1e1e4;*/
 }
