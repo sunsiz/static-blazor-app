@@ -21,7 +21,7 @@ namespace BlazorApp.Shared
             _dbPath = "quran.db";;
             _logger = loggerFactory.CreateLogger<DBContext>();
         }
-        private void InitializeAsync()
+        private void Initialize()
         {
             // Don't Create database if it exists
             if (conn != null)
@@ -34,7 +34,7 @@ namespace BlazorApp.Shared
                     // Create database and Tables
                     //if (!File.Exists(_dbPath)) await CopyFileToAppDataDirectory();//CopyDB(_dbPath);
                     conn = new SQLiteConnection(_dbPath,
-                        SQLite.SQLiteOpenFlags.ReadWrite | SQLite.SQLiteOpenFlags.Create | SQLite.SQLiteOpenFlags.SharedCache)
+                        SQLite.SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.FullMutex | SQLite.SQLiteOpenFlags.Create | SQLite.SQLiteOpenFlags.SharedCache)
                     {
                         Tracer = new Action<string>(q => Debug.WriteLine(q)),
                         Trace = true
@@ -60,12 +60,12 @@ namespace BlazorApp.Shared
 
         public List<Sura> GetSuras()
         {
-            InitializeAsync();
+            Initialize();
             return conn.Table<Sura>().ToList();
         }
         public IEnumerable<Aya> GetAyaList(int suraId)
         {
-            InitializeAsync();
+            Initialize();
             return conn.Table<Aya>().Where(a => a.SuraId == suraId).ToList();
         }
     }
