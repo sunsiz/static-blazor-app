@@ -26,7 +26,7 @@ namespace ApiIsolated
             // Register DBContext and the SQLite database
             //builder.Services.AddScoped<DBContext>(s => ActivatorUtilities.CreateInstance<DBContext>(s, dbPath));
             //string dbPath = "quran.db";
-            var db = new DBContext(new LoggerFactory(), Program.DbPath);
+            var db = new DBContext(new LoggerFactory(), Program.AzureDbPath);
             var result = db.GetSuras();
             //return new OkObjectResult(suras);
             //response.WriteString("Welcome to Azure Functions!");
