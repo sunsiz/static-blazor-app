@@ -29,7 +29,7 @@ namespace ApiIsolated
             // Register DBContext and the SQLite database
             //builder.Services.AddScoped<DBContext>(s => ActivatorUtilities.CreateInstance<DBContext>(s, dbPath));
             
-            var db = new DBContext(new LoggerFactory());
+            var db = new DBContext(new LoggerFactory(), Program.DbPath);
             var result = db.GetAyaList(suraId);
             //return new OkObjectResult(suras);
             //response.WriteString("Welcome to Azure Functions!");

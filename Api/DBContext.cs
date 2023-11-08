@@ -16,9 +16,9 @@ namespace BlazorApp.Shared
         private readonly ILogger _logger;
         private readonly string _dbPath;
         SQLiteConnection conn;
-        public DBContext(ILoggerFactory loggerFactory)
+        public DBContext(ILoggerFactory loggerFactory, string dbPath)
         {
-            _dbPath = "quran.db";;
+            _dbPath = dbPath;
             _logger = loggerFactory.CreateLogger<DBContext>();
         }
         private void Initialize()

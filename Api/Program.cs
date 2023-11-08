@@ -14,9 +14,9 @@ namespace ApiIsolated
     public class Program
     {
         //Copied from https://www.youtube.com/watch?v=xSAyEDFLFTw
-        private const string DbPath = "quran.db";
-        private const string AzureDbPath = "d:/home/quran.db";
-        private const string DevEnvironment = "Development";
+        public const string DbPath = "quran.db";
+        public const string AzureDbPath = "d:/home/quran.db";
+        public const string DevEnvironment = "Development";
         public static void Main()
         {
             var env = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT");
