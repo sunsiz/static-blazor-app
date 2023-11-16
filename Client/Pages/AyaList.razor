@@ -1,6 +1,5 @@
 ﻿@page "/AyaList"
 @using BlazorApp.Shared
-@using System.Net
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime 
 
@@ -21,15 +20,15 @@
                             <span class='oi oi-heart @(aya.IsFavorite?"text-warning":"text-white")' title="Favorite" aria-hidden="true" @onclick="()=>Favorite(aya)"></span> *@
                             @* <span class='oi oi-bookmark me-3 @(IsBookmark(aya)?"text-warning":"text-white")' title="Bookmark" aria-hidden="true" @onclick="()=>Bookmark(aya)"></span> *@
                         </h5>
-                        <p class="arabic mb-0 me-2" style=@arabicStyle>@aya.Arabic</p>
-                        <p class="my-2" style=@textStyle>@aya.Text</p>
-                        @if (aya.Comment != null)
+                        <p class="arabic mb-0 me-2" style="font-size: @_arabicStyle px;">@aya.Arabic</p>
+                        <p class="my-2" style=@($"font-szie: {_textStyle} px;")>@aya.Text</p>
+                        @* @if (aya.Comment != null)
                         {
                             <hr />
-                            <p style=@commentStyle>
+                            <p style="font-size: @_commentStyle px;">
                                 @((MarkupString)aya.Comment)
                             </p>
-                        }
+                        } *@
                     </div>
                 </div>
             </div>
@@ -44,35 +43,67 @@
     [SupplyParameterFromQuery]
     public string SuraName { get; set; }
     private Aya[] ayaList = new Aya[] { };
-    private string arabicStyle
-    {
-        get
-        {
-            var result = JSRuntime.InvokeAsync<int>("localStorage.getItem", "ArabicFontSize").ConfigureAwait(false);
-            // if (result == 0) result = 16;
-            return "font-size:" + result + "px";
-        }
-    }
+    string _arabicStyle = "16";
+    string _textStyle = "14";
+    string _commentStyle = "12";
+    // string ArabicStyle
+    // {
+    //     get
+    //     {
+    //         var result = await LocalStoragrageHelper.GetValueAsync<string>("arabic");
+    //         if (string.IsNullOrEmpty(result)) result = 16.ToString();
+    //         return "font-size: " + result + "px;";
+    //     }
+    // }
 
-    private string textStyle
-    {
-        get
-        {
-            var result = JSRuntime.InvokeAsync<int>("localStorage.getItem", "TranslateFontSize");
-            // result = result == 0 ? 14 : result;
-            return "font-size:" + result + "px";
-        }
-    }
+    // string TextStyle
+    // {
+    //     get
+    //     {
+    //         var result = await LocalStoragrageHelper.GetValueAsync<string>("text");
+    //         if (string.IsNullOrEmpty(result)) result = 14.ToString();
+    //         return "font-size: " + result + "px;";
+    //     }
+    // }
 
-    private string commentStyle
-    {
-        get
-        {
-            var result = JSRuntime.InvokeAsync<int>("localStorage.getItem", "CommentFontSize");
-            // if (result == 0) result = 12;
-            return "font-size:" + result + "px";
-        }
-    }
+    // string CommentStyle
+    // {
+    //     get
+    //     {
+    //         var result = await LocalStoragrageHelper.GetValueAsync<string>("arabic");
+    //         if (string.IsNullOrEmpty(result)) result = 12.ToString();
+    //         return "font-size: " + result + "px;";
+    //     }
+    // }
+    // private string arabicStyle
+    // {
+    //     get
+    //     {
+    //         var result = JSRuntime.InvokeAsync<int>("localStorage.getItem", "ArabicFontSize").ConfigureAwait(false);
+    //         // if (result == 0) result = 16;
+    //         return "font-size:" + result + "px";
+    //     }
+    // }
+
+    // private string textStyle
+    // {
+    //     get
+    //     {
+    //         var result = JSRuntime.InvokeAsync<int>("localStorage.getItem", "TranslateFontSize");
+    //         // result = result == 0 ? 14 : result;
+    //         return "font-size:" + result + "px";
+    //     }
+    // }
+
+    // private string commentStyle
+    // {
+    //     get
+    //     {
+    //         var result = JSRuntime.InvokeAsync<int>("localStorage.getItem", "CommentFontSize");
+    //         // if (result == 0) result = 12;
+    //         return "font-size:" + result + "px";
+    //     }
+    // }
 
     protected override async Task OnInitializedAsync()
     {
@@ -80,6 +111,11 @@
         {
             ayaList = await Http.GetFromJsonAsync<Aya[]>("/api/Aya/"+SuraId) ?? new Aya[] { };
             Console.WriteLine("Aya list is " + ayaList);
+            var helper = new LocalStoragrageHelper(JSRuntime);
+            _arabicStyle = await helper.GetValueAsync<string>("arabic");
+            _textStyle = await helper.GetValueAsync<string>("text");
+            _commentStyle = await helper.GetValueAsync<string>("arabic");
+            Console.WriteLine("Arabic font size:"+_arabicStyle);
         }
         catch (Exception ex)
         {

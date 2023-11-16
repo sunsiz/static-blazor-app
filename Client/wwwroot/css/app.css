@@ -203,3 +203,6 @@ a{ text-decoration: none;}
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
     /*box-shadow: 0 2px 3px 0 #e1e1e4;*/
 }
+.search-term {
+    background-color: blanchedalmond;
+}

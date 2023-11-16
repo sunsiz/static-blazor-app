@@ -1,12 +1,9 @@
-using System;
-using System.Net;
-using System.Threading.Tasks;
 using BlazorApp.Shared;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Net;
 
 namespace ApiIsolated
 {
@@ -22,14 +19,14 @@ namespace ApiIsolated
         [Function("Aya")]
         public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get",Route = "aya/{id:int?}")] HttpRequestData req, int? id)
         {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            _logger.LogInformation("C# HTTP trigger function <<Aya>> processed a request.");
             var sura = id;//req.Query["id"];
             var suraId=Convert.ToInt32(sura);
             //response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
             // Register DBContext and the SQLite database
             //builder.Services.AddScoped<DBContext>(s => ActivatorUtilities.CreateInstance<DBContext>(s, dbPath));
             
-            var db = new DBContext(new LoggerFactory(), Program.AzureDbPath);
+            var db = new DBContext(new LoggerFactory(), Program.FinalDbPath);
             var result = db.GetAyaList(suraId);
             //return new OkObjectResult(suras);
             //response.WriteString("Welcome to Azure Functions!");

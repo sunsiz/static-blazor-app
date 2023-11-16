@@ -68,5 +68,11 @@ namespace BlazorApp.Shared
             Initialize();
             return conn.Table<Aya>().Where(a => a.SuraId == suraId).ToList();
         }
+
+        internal List<Aya> SearchAyas(string keyword)
+        {
+            Initialize();
+            return conn.Table<Aya>().Where(a => a.Text.Contains(keyword) || a.Comment.Contains(keyword)).ToList();
+        }
     }
 }
