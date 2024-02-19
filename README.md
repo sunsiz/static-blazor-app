@@ -1,5 +1,7 @@
 # Blazor Starter Application
 
+The preview is [here](https://red-moss-0b5cd3a03.4.azurestaticapps.net/)
+
 This template contains an example .NET 7 [Blazor WebAssembly](https://docs.microsoft.com/aspnet/core/blazor/?view=aspnetcore-6.0#blazor-webassembly) client application, a .NET 7 C# [Azure Functions](https://docs.microsoft.com/azure/azure-functions/functions-overview), and a C# class library with shared code.
 
 > Note: Azure Functions only supports .NET 7 in the isolated process execution model
